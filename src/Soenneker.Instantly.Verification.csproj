@@ -1,0 +1,60 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net8.0</TargetFrameworks>
+        <Nullable>enable</Nullable>
+        <Platforms>AnyCPU</Platforms>
+        <NoWarn>$(NoWarn);1591</NoWarn>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <Description>A .NET typesafe implementation of Instantly.ai's Verification API</Description>
+        <Version Condition="'$(BUILD_VERSION)' == ''">2.1.0</Version>
+        <Version Condition="'$(BUILD_VERSION)' != ''">$(BUILD_VERSION)</Version>
+        <AssemblyName>Soenneker.Instantly.Verification</AssemblyName>
+        <PackageId>Soenneker.Instantly.Verification</PackageId>
+        <PackageTags>instantly verification sdk ai instantlyverificationutil util csharp dotnet c# .net</PackageTags>
+        <Copyright>Copyright © 2024 Jake Soenneker</Copyright>
+        <Authors>Jake Soenneker</Authors>
+        <Company>https://soenneker.com</Company>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <IsPackable>true</IsPackable>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/soenneker/soenneker.instantly.verification</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/soenneker/soenneker.instantly.verification</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryBranch>main</RepositoryBranch>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <LangVersion>latest</LangVersion>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageIcon>icon.png</PackageIcon>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Compile Remove="NewFolder1\**" />
+      <Compile Remove="NewFolder\**" />
+      <EmbeddedResource Remove="NewFolder1\**" />
+      <EmbeddedResource Remove="NewFolder\**" />
+      <None Remove="NewFolder1\**" />
+      <None Remove="NewFolder\**" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <None Include="..\CONTRIBUTING.md" Link="CONTRIBUTING.md" />
+        <None Include="..\README.md" Pack="true" PackagePath="\" />
+        <None Include="..\LICENSE" Pack="true" PackagePath="\" />
+        <None Include="..\icon.png" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Ardalis.SmartEnum.SystemTextJson" Version="8.1.0" />
+        <PackageReference Include="Soenneker.Extensions.Configuration" Version="2.1.465" />
+        <PackageReference Include="Soenneker.Extensions.Enumerable.String" Version="2.1.562" />
+        <PackageReference Include="Soenneker.Extensions.HttpClient" Version="2.1.1582" />
+        <PackageReference Include="Soenneker.Instantly.Client" Version="2.1.725" />
+    </ItemGroup>
+</Project>
