@@ -2,7 +2,6 @@ using Soenneker.Instantly.Verification.Abstract;
 using Soenneker.Tests.FixturedUnit;
 using Xunit;
 
-
 namespace Soenneker.Instantly.Verification.Tests;
 
 [Collection("Collection")]
@@ -13,5 +12,11 @@ public class InstantlyVerificationUtilTests : FixturedUnitTest
     public InstantlyVerificationUtilTests(Fixture fixture, ITestOutputHelper output) : base(fixture, output)
     {
         _util = Resolve<IInstantlyVerificationUtil>(true);
+    }
+
+    [Fact]
+    public void Default()
+    {
+
     }
 }
