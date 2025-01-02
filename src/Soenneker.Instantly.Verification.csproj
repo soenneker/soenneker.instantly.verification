@@ -14,7 +14,7 @@
         <AssemblyName>Soenneker.Instantly.Verification</AssemblyName>
         <PackageId>Soenneker.Instantly.Verification</PackageId>
         <PackageTags>instantly verification sdk ai instantlyverificationutil util csharp dotnet c# .net</PackageTags>
-        <Copyright>Copyright © 2024 Jake Soenneker</Copyright>
+        <Copyright>Copyright © 2024-2025 Jake Soenneker</Copyright>
         <Authors>Jake Soenneker</Authors>
         <Company>https://soenneker.com</Company>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
