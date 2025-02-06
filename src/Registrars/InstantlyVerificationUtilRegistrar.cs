@@ -13,18 +13,22 @@ public static class InstantlyVerificationUtilRegistrar
     /// <summary>
     /// Adds <see cref="IInstantlyVerificationUtil"/> as a singleton service. <para/>
     /// </summary>
-    public static void AddInstantlyVerificationUtilAsSingleton(this IServiceCollection services)
+    public static IServiceCollection AddInstantlyVerificationUtilAsSingleton(this IServiceCollection services)
     {
-        services.AddInstantlyClientAsSingleton();
-        services.TryAddSingleton<IInstantlyVerificationUtil, InstantlyVerificationUtil>();
+        services.AddInstantlyClientAsSingleton()
+                .TryAddSingleton<IInstantlyVerificationUtil, InstantlyVerificationUtil>();
+
+        return services;
     }
 
     /// <summary>
     /// Adds <see cref="IInstantlyVerificationUtil"/> as a scoped service. <para/>
     /// </summary>
-    public static void AddInstantlyVerificationUtilAsScoped(this IServiceCollection services)
+    public static IServiceCollection AddInstantlyVerificationUtilAsScoped(this IServiceCollection services)
     {
-        services.AddInstantlyClientAsSingleton();
-        services.TryAddScoped<IInstantlyVerificationUtil, InstantlyVerificationUtil>();
+        services.AddInstantlyClientAsSingleton()
+                .TryAddScoped<IInstantlyVerificationUtil, InstantlyVerificationUtil>();
+
+        return services;
     }
 }

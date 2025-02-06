@@ -35,15 +35,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Compile Remove="NewFolder1\**" />
-      <Compile Remove="NewFolder\**" />
-      <EmbeddedResource Remove="NewFolder1\**" />
-      <EmbeddedResource Remove="NewFolder\**" />
-      <None Remove="NewFolder1\**" />
-      <None Remove="NewFolder\**" />
-    </ItemGroup>
-    
-    <ItemGroup>
         <None Include="..\CONTRIBUTING.md" Link="CONTRIBUTING.md" />
         <None Include="..\README.md" Pack="true" PackagePath="\" />
         <None Include="..\LICENSE" Pack="true" PackagePath="\" />
@@ -54,6 +45,6 @@
         <PackageReference Include="Ardalis.SmartEnum.SystemTextJson" Version="8.1.0" />
         <PackageReference Include="Soenneker.Extensions.Configuration" Version="3.0.624" />
         <PackageReference Include="Soenneker.Extensions.HttpClient" Version="3.0.2757" />
-        <PackageReference Include="Soenneker.Instantly.Client" Version="3.0.1239" />
+        <PackageReference Include="Soenneker.Instantly.Client" Version="3.0.1241" />
     </ItemGroup>
 </Project>
