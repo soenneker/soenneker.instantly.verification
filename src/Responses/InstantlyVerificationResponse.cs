@@ -1,5 +1,4 @@
 ﻿using System.Text.Json.Serialization;
-using Ardalis.SmartEnum.SystemTextJson;
 using Soenneker.Instantly.Verification.Enums;
 
 namespace Soenneker.Instantly.Verification.Responses;
@@ -16,7 +15,6 @@ public record InstantlyVerificationResponse
     /// - pending: The email is pending verification; check the status in a few minutes.
     /// </summary>
     [JsonPropertyName("status")]
-    [JsonConverter(typeof(SmartEnumNameConverter<InstantlyVerificationJobStatus, int>))]
     public InstantlyVerificationJobStatus? Status { get; set; }
 
     /// <summary>
@@ -32,7 +30,6 @@ public record InstantlyVerificationResponse
     /// - invalid: The email is invalid, or risky to send emails to.
     /// </summary>
     [JsonPropertyName("verification_status")]
-    [JsonConverter(typeof(SmartEnumNameConverter<VerificationStatus, int>))]
     public VerificationStatus? VerificationStatus { get; set; }
 
     /// <summary>

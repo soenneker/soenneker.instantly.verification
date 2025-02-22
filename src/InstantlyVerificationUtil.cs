@@ -41,7 +41,7 @@ public class InstantlyVerificationUtil : IInstantlyVerificationUtil
 
         HttpClient client = await _instantlyClient.Get(cancellationToken).NoSync();
 
-        InstantlyVerificationResponse? response = await client
+        InstantlyVerificationResponse response = await client
             .SendWithRetryToType<InstantlyVerificationResponse>(HttpMethod.Post, $"verify/single?api_key={_apiKey}", request, logger: _logger, cancellationToken: cancellationToken).NoSync();
 
         LogResponseIfEnabled(response, email);
@@ -56,7 +56,7 @@ public class InstantlyVerificationUtil : IInstantlyVerificationUtil
 
         HttpClient client = await _instantlyClient.Get(cancellationToken).NoSync();
 
-        InstantlyVerificationResponse? response = await client
+        InstantlyVerificationResponse response = await client
             .SendWithRetryToType<InstantlyVerificationResponse>(HttpMethod.Get, $"verify/status?api_key={_apiKey}&email={email}", null, logger: _logger, cancellationToken: cancellationToken)
             .NoSync();
 
