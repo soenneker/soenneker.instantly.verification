@@ -45,6 +45,6 @@
         <PackageReference Include="Intellenum" Version="1.0.6" />
         <PackageReference Include="Soenneker.Extensions.Configuration" Version="3.0.651" />
         <PackageReference Include="Soenneker.Extensions.HttpClient" Version="3.0.3025" />
-        <PackageReference Include="Soenneker.Instantly.Client" Version="3.0.1374" />
+        <PackageReference Include="Soenneker.Instantly.Client" Version="3.0.1382" />
     </ItemGroup>
 </Project>
