@@ -1,4 +1,4 @@
-# Contributing to Soenneker.Instantly.Verification
+﻿# Contributing to Soenneker.Instantly.Verification
 
 We're excited that you're interested in contributing!
 
