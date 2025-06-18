@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Soenneker.Instantly.Client.Registrars;
+using Soenneker.Instantly.ClientUtil.Registrars;
 using Soenneker.Instantly.Verification.Abstract;
 
 namespace Soenneker.Instantly.Verification.Registrars;
@@ -15,7 +16,7 @@ public static class InstantlyVerificationUtilRegistrar
     /// </summary>
     public static IServiceCollection AddInstantlyVerificationUtilAsSingleton(this IServiceCollection services)
     {
-        services.AddInstantlyClientAsSingleton()
+        services.AddInstantlyOpenApiClientUtilAsSingleton()
                 .TryAddSingleton<IInstantlyVerificationUtil, InstantlyVerificationUtil>();
 
         return services;
@@ -26,7 +27,7 @@ public static class InstantlyVerificationUtilRegistrar
     /// </summary>
     public static IServiceCollection AddInstantlyVerificationUtilAsScoped(this IServiceCollection services)
     {
-        services.AddInstantlyClientAsSingleton()
+        services.AddInstantlyOpenApiClientUtilAsSingleton()
                 .TryAddScoped<IInstantlyVerificationUtil, InstantlyVerificationUtil>();
 
         return services;

@@ -1,71 +1,64 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Soenneker.Extensions.Configuration;
-using Soenneker.Instantly.Client.Abstract;
+using Soenneker.Instantly.ClientUtil.Abstract;
 using Soenneker.Instantly.Verification.Abstract;
 using System.Threading.Tasks;
 using System.Threading;
-using Soenneker.Instantly.Verification.Requests;
-using Soenneker.Instantly.Verification.Responses;
 using Soenneker.Extensions.ValueTask;
-using System.Net.Http;
-using Soenneker.Extensions.HttpClient;
-using Soenneker.Instantly.Verification.Enums;
+using Soenneker.Instantly.OpenApiClient;
+using Soenneker.Instantly.OpenApiClient.Api.V2.EmailVerification;
+using Soenneker.Instantly.OpenApiClient.Models;
 
 namespace Soenneker.Instantly.Verification;
 
 /// <inheritdoc cref="IInstantlyVerificationUtil"/>
-public class InstantlyVerificationUtil : IInstantlyVerificationUtil
+public sealed class InstantlyVerificationUtil : IInstantlyVerificationUtil
 {
-    private readonly IInstantlyClient _instantlyClient;
+    private readonly IInstantlyOpenApiClientUtil _instantlyOpenApiClientUtil;
     private readonly ILogger<InstantlyVerificationUtil> _logger;
-
-    private readonly string _apiKey;
     private readonly bool _log;
 
-    public InstantlyVerificationUtil(IInstantlyClient instantlyClient, ILogger<InstantlyVerificationUtil> logger, IConfiguration config)
+    public InstantlyVerificationUtil(IInstantlyOpenApiClientUtil instantlyOpenApiClientUtil, ILogger<InstantlyVerificationUtil> logger, IConfiguration config)
     {
-        _instantlyClient = instantlyClient;
+        _instantlyOpenApiClientUtil = instantlyOpenApiClientUtil;
         _logger = logger;
-
-        _apiKey = config.GetValueStrict<string>("Instantly:ApiKey");
         _log = config.GetValue<bool>("Instantly:LogEnabled");
     }
 
-    public async ValueTask<InstantlyVerificationResponse?> Verify(string email, string webhookUri, CancellationToken cancellationToken = default)
+    public async ValueTask<Def3?> Verify(string email, string webhookUri, CancellationToken cancellationToken = default)
     {
-        var request = new InstantlyVerificationRequest {Email = email, WebhookUrl = webhookUri};
-
         if (_log)
             _logger.LogDebug("Verifying email ({email}) with Instantly...", email);
 
-        HttpClient client = await _instantlyClient.Get(cancellationToken).NoSync();
+        InstantlyOpenApiClient client = await _instantlyOpenApiClientUtil.Get(cancellationToken).NoSync();
 
-        InstantlyVerificationResponse response = await client
-            .SendWithRetryToType<InstantlyVerificationResponse>(HttpMethod.Post, $"verify/single?api_key={_apiKey}", request, logger: _logger, cancellationToken: cancellationToken).NoSync();
+        var requestBody = new EmailVerificationPostRequestBody
+        {
+            Email = email,
+            WebhookUrl = webhookUri
+        };
 
+        Def3? response = await client.Api.V2.EmailVerification.PostAsync(requestBody, cancellationToken: cancellationToken);
         LogResponseIfEnabled(response, email);
 
         return response;
     }
 
-    public async ValueTask<InstantlyVerificationResponse?> GetResult(string email, CancellationToken cancellationToken = default)
+    public async ValueTask<Def3?> GetResult(string email, CancellationToken cancellationToken = default)
     {
         if (_log)
             _logger.LogDebug("Getting status of email verification result ({email}) from Instantly...", email);
 
-        HttpClient client = await _instantlyClient.Get(cancellationToken).NoSync();
+        InstantlyOpenApiClient client = await _instantlyOpenApiClientUtil.Get(cancellationToken).NoSync();
 
-        InstantlyVerificationResponse response = await client
-            .SendWithRetryToType<InstantlyVerificationResponse>(HttpMethod.Get, $"verify/status?api_key={_apiKey}&email={email}", null, logger: _logger, cancellationToken: cancellationToken)
-            .NoSync();
-
+        Def3? response = await client.Api.V2.EmailVerification[email].GetAsync(cancellationToken: cancellationToken);
         LogResponseIfEnabled(response, email);
 
         return response;
     }
 
-    private void LogResponseIfEnabled(InstantlyVerificationResponse? response, string email)
+    private void LogResponseIfEnabled(Def3? response, string email)
     {
         if (!_log)
             return;
@@ -76,14 +69,16 @@ public class InstantlyVerificationUtil : IInstantlyVerificationUtil
             return;
         }
 
-        if (response.Status == InstantlyVerificationJobStatus.Pending)
-            _logger.LogDebug("Instantly has said email is pending verification ({email})", email);
-        else if (response.Status == InstantlyVerificationJobStatus.Success)
+        if (response.Status == Def3_status.Success)
         {
-            if (response.VerificationStatus == VerificationStatus.Valid)
+            if (response.VerificationStatus == Def3_verification_status.Verified)
                 _logger.LogDebug("Instantly has said email is good ({email})", email);
             else
                 _logger.LogWarning("Instantly has said email is bad ({email})", email);
+        }
+        else
+        {
+            _logger.LogDebug("Instantly has said email is pending verification ({email})", email);
         }
     }
 }
