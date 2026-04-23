@@ -1,20 +1,19 @@
 using Soenneker.Instantly.Verification.Abstract;
-using Soenneker.Tests.FixturedUnit;
-using Xunit;
+using Soenneker.Tests.HostedUnit;
 
 namespace Soenneker.Instantly.Verification.Tests;
 
-[Collection("Collection")]
-public class InstantlyVerificationUtilTests : FixturedUnitTest
+[ClassDataSource<Host>(Shared = SharedType.PerTestSession)]
+public class InstantlyVerificationUtilTests : HostedUnitTest
 {
     private readonly IInstantlyVerificationUtil _util;
 
-    public InstantlyVerificationUtilTests(Fixture fixture, ITestOutputHelper output) : base(fixture, output)
+    public InstantlyVerificationUtilTests(Host host) : base(host)
     {
         _util = Resolve<IInstantlyVerificationUtil>(true);
     }
 
-    [Fact]
+    [Test]
     public void Default()
     {
 
