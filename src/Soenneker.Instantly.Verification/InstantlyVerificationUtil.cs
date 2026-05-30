@@ -33,7 +33,7 @@ public sealed class InstantlyVerificationUtil : IInstantlyVerificationUtil
 
         InstantlyOpenApiClient client = await _instantlyOpenApiClientUtil.Get(cancellationToken).NoSync();
 
-        var requestBody = new EmailVerificationPostRequestBody
+        var requestBody = new CreateEmailVerification
         {
             Email = email,
             WebhookUrl = webhookUri
