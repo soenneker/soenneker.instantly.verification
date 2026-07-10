@@ -17,7 +17,7 @@ public interface IInstantlyVerificationUtil
     /// <param name="webhookUri"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    ValueTask<Def3?> Verify(string email, string webhookUri, CancellationToken cancellationToken = default);
+    ValueTask<EmailVerification?> Verify(string email, string webhookUri, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// This endpoint can be used if the /verify/single endpoint takes longer to verify emails, which can happen for certain tricky emails/domains. The result will be available for one day after verification.
@@ -26,5 +26,5 @@ public interface IInstantlyVerificationUtil
     /// <param name="email"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    ValueTask<Def3?> GetResult(string email, CancellationToken cancellationToken = default);
+    ValueTask<EmailVerification?> GetResult(string email, CancellationToken cancellationToken = default);
 }

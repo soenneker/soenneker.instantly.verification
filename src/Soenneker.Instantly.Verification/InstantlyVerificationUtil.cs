@@ -26,39 +26,39 @@ public sealed class InstantlyVerificationUtil : IInstantlyVerificationUtil
         _log = config.GetValue<bool>("Instantly:LogEnabled");
     }
 
-    public async ValueTask<Def3?> Verify(string email, string webhookUri, CancellationToken cancellationToken = default)
+    public async ValueTask<EmailVerification?> Verify(string email, string webhookUri, CancellationToken cancellationToken = default)
     {
         if (_log)
             _logger.LogDebug("Verifying email ({email}) with Instantly...", email);
 
         InstantlyOpenApiClient client = await _instantlyOpenApiClientUtil.Get(cancellationToken).NoSync();
 
-        var requestBody = new CreateEmailVerification
+        var requestBody = new CreateEmailVerificationRequest
         {
             Email = email,
             WebhookUrl = webhookUri
         };
 
-        Def3? response = await client.Api.V2.EmailVerification.PostAsync(requestBody, cancellationToken: cancellationToken);
+        EmailVerification? response = await client.Api.V2.EmailVerification.PostAsync(requestBody, cancellationToken: cancellationToken);
         LogResponseIfEnabled(response, email);
 
         return response;
     }
 
-    public async ValueTask<Def3?> GetResult(string email, CancellationToken cancellationToken = default)
+    public async ValueTask<EmailVerification?> GetResult(string email, CancellationToken cancellationToken = default)
     {
         if (_log)
             _logger.LogDebug("Getting status of email verification result ({email}) from Instantly...", email);
 
         InstantlyOpenApiClient client = await _instantlyOpenApiClientUtil.Get(cancellationToken).NoSync();
 
-        Def3? response = await client.Api.V2.EmailVerification[email].GetAsync(cancellationToken: cancellationToken);
+        EmailVerification? response = await client.Api.V2.EmailVerification[email].GetAsync(cancellationToken: cancellationToken);
         LogResponseIfEnabled(response, email);
 
         return response;
     }
 
-    private void LogResponseIfEnabled(Def3? response, string email)
+    private void LogResponseIfEnabled(EmailVerification? response, string email)
     {
         if (!_log)
             return;
@@ -69,9 +69,9 @@ public sealed class InstantlyVerificationUtil : IInstantlyVerificationUtil
             return;
         }
 
-        if (response.Status == Def3_status.Success)
+        if (response.Status == EmailVerificationStatus.Success)
         {
-            if (response.VerificationStatus == Def3_verification_status.Verified)
+            if (response.VerificationStatus == EmailVerificationVerificationStatus.Verified)
                 _logger.LogDebug("Instantly has said email is good ({email})", email);
             else
                 _logger.LogWarning("Instantly has said email is bad ({email})", email);
