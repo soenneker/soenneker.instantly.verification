@@ -12,7 +12,6 @@ using Soenneker.Instantly.OpenApiClient.Models;
 
 namespace Soenneker.Instantly.Verification;
 
-/// <inheritdoc cref="IInstantlyVerificationUtil"/>
 public sealed class InstantlyVerificationUtil : IInstantlyVerificationUtil
 {
     private readonly IInstantlyOpenApiClientUtil _instantlyOpenApiClientUtil;
@@ -69,16 +68,23 @@ public sealed class InstantlyVerificationUtil : IInstantlyVerificationUtil
             return;
         }
 
-        if (response.Status == EmailVerificationStatus.Success)
+        if (response.Status != EmailVerificationStatus.Success)
         {
-            if (response.VerificationStatus == EmailVerificationVerificationStatus.Verified)
-                _logger.LogDebug("Instantly has said email is good ({email})", email);
-            else
-                _logger.LogWarning("Instantly has said email is bad ({email})", email);
+            _logger.LogWarning("Instantly email verification request failed ({email})", email);
+            return;
         }
-        else
+
+        switch (response.VerificationStatus)
         {
-            _logger.LogDebug("Instantly has said email is pending verification ({email})", email);
+            case EmailVerificationVerificationStatus.Verified:
+                _logger.LogDebug("Instantly verified email ({email})", email);
+                break;
+            case EmailVerificationVerificationStatus.Invalid:
+                _logger.LogWarning("Instantly marked email as invalid ({email})", email);
+                break;
+            default:
+                _logger.LogDebug("Instantly email verification is pending ({email})", email);
+                break;
         }
     }
 }

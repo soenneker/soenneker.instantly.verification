@@ -5,26 +5,26 @@ using Soenneker.Instantly.OpenApiClient.Models;
 namespace Soenneker.Instantly.Verification.Abstract;
 
 /// <summary>
-/// A .NET typesafe implementation of Instantly.ai's Verification API
+/// Starts Instantly email-verification jobs and retrieves their results.
 /// </summary>
 public interface IInstantlyVerificationUtil
 {
     /// <summary>
-    /// If an email takes longer than 10 seconds to verify, the endpoint will return the status as "pending". In that case, you may use the /verify/single/status to check the status of the verification job.
+    /// Starts verification for an email address and requests delivery of the result to a webhook.
     /// </summary>
     /// <remarks>Alternatively, you can send a webhook_url to receive the results instead of polling the status endpoint.</remarks>
-    /// <param name="email"></param>
-    /// <param name="webhookUri"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
+    /// <param name="email">The email address to verify.</param>
+    /// <param name="webhookUri">The webhook URL to receive the asynchronous result.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The current verification state, or <see langword="null"/> when the API returns no body.</returns>
     ValueTask<EmailVerification?> Verify(string email, string webhookUri, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// This endpoint can be used if the /verify/single endpoint takes longer to verify emails, which can happen for certain tricky emails/domains. The result will be available for one day after verification.
+    /// Gets the latest available verification result for an email address.
     /// </summary>
     /// <remarks>Alternatively, you can send a webhook_url to the /verify/single endpoint to receive the results instead of polling the /status endpoint.</remarks>
-    /// <param name="email"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
+    /// <param name="email">The email address previously submitted for verification.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The verification result, or <see langword="null"/> when it is unavailable.</returns>
     ValueTask<EmailVerification?> GetResult(string email, CancellationToken cancellationToken = default);
 }

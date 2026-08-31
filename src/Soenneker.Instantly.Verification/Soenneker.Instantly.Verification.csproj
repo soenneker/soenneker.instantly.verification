@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <Description>A .NET typesafe implementation of Instantly.ai's Verification API</Description>
+        <Description>Starts Instantly email-verification jobs and retrieves their results</Description>
         <Version Condition="'$(BUILD_VERSION)' == ''">4.0.0</Version>
         <Version Condition="'$(BUILD_VERSION)' != ''">$(BUILD_VERSION)</Version>
         <AssemblyName>Soenneker.Instantly.Verification</AssemblyName>
