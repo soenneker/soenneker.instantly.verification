@@ -12,6 +12,7 @@ using Soenneker.Instantly.OpenApiClient.Models;
 
 namespace Soenneker.Instantly.Verification;
 
+/// <inheritdoc cref="IInstantlyVerificationUtil" />
 public sealed class InstantlyVerificationUtil : IInstantlyVerificationUtil
 {
     private readonly IInstantlyOpenApiClientUtil _instantlyOpenApiClientUtil;
